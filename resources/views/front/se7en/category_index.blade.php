@@ -1,0 +1,1 @@
+@extends('front.paidai.front_tpl')
