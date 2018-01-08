@@ -29,6 +29,7 @@ class BaseController extends Controller
             View::share('categories',$this->categories);
             View::share('title',$this->title);
             View::share('front',$this->front);
+            View::share('show_menu',0);
             
 	        return $next($request);
 	    });

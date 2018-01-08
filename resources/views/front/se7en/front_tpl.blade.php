@@ -90,7 +90,7 @@
         
       </div>
     </div>
-
+@if($show_menu)
 <ul id="menu" class="mfb-component--br mfb-zoomin" data-mfb-toggle="hover">
   <li class="mfb-component__wrap">
     <a href="#" class="mfb-component__button--main">
@@ -98,26 +98,18 @@
       <i class="mfb-component__main-icon--active ion-close-round"></i>
     </a>
     <ul class="mfb-component__list">
+      @foreach($menu_items as $item)
       <li>
-        <a href="#" data-mfb-label="Child Button 1" class="mfb-component__button--child">
-          <i class="mfb-component__child-icon ion-social-github">搜索</i>
+        <a href="{{ $item['url'] }}" data-mfb-label="{{ $item['info'] }}" class="mfb-component__button--child">
+          <i class="mfb-component__child-icon ion-social-github">{{ $item['name'] }}</i>
         </a>
       </li>
-      <li>
-        <a href="#" data-mfb-label="Child Button 2" class="mfb-component__button--child">
-          <i class="mfb-component__child-icon ion-social-octocat">首页</i>
-        </a>
-      </li>
-      <li>
-        <a href="#"
-           data-mfb-label="Child Button 3" class="mfb-component__button--child">
-          <i class="mfb-component__child-icon ion-social-twitter">下一章</i>
-        </a>
-      </li>
+      @endforeach
+      
     </ul>
   </li>
 </ul>
-
+@endif
   </body>
   <script src="/se7en/javascripts/jquery-1.10.2.min.js" type="text/javascript"></script>
   <script src="/se7en/javascripts/jquery-ui.js" type="text/javascript"></script>

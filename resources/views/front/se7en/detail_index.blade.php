@@ -7,6 +7,9 @@
 <div class="col-lg-12 col-md-12 col-xs-12">
 <div class="widget-container fluid-height clearfix">
 
+<div class="heading">
+  <i class="icon-table"></i>{{ $info->vname.'>'.$info->lname.'>'.$info->cname }}    
+</div>
   <div class="widget-content padded clearfix">
     <table class="table table-striped">
       

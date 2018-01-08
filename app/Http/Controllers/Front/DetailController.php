@@ -25,9 +25,34 @@ class DetailController extends BaseController
             $first_chapter = DB::table('chapter')->select('id')->first();
             $id = $first_chapter->id;
         }
+        $info = DB::table('chapter')
+                ->leftJoin('list','list.id','=','chapter.list_id')
+                ->leftJoin('volume','volume.id','=','chapter.volume_id')
+                ->select('volume.name as vname','list.name as lname','chapter.name as cname')
+                ->where('chapter.id',$id)
+                ->first();
 
 
         $details = DB::table('detail')->where('chapter_id',$id)->paginate($this->detail_page);
+
+        $menu_items = [];
+
+        $prev_chapter_id = $id - 1;
+        $prev_chapter = DB::table('chapter')->select('id','name')->where('id',$prev_chapter_id)->first();
+        if($prev_chapter){
+            $prev_arr = ['url'=>URL('/'.$this->front.'/detail?chapter_id='.$prev_chapter_id),'name'=>'上一章','info'=>$prev_chapter->name];
+            array_push($menu_items, $prev_arr);
+        }
+        
+        $next_chapter_id = $id + 1;
+        $next_chapter = DB::table('chapter')->select('id','name')->where('id',$next_chapter_id)->first();
+        if($next_chapter){
+            $next_arr = ['url'=>URL('/'.$this->front.'/detail?chapter_id='.$next_chapter_id),'name'=>'下一章','info'=>$next_chapter->name];
+            array_push($menu_items, $next_arr);
+        }
+        if($menu_items)
+            $show_menu = 1;
+        
         $colspan = 4;
         if(count($details) == 1){
             $colspan = 1;
@@ -41,6 +66,9 @@ class DetailController extends BaseController
                                                     'start_page'=>$start_page,
                                                     'chapter_id'=>$id,
                                                     'colspan'=>$colspan,
+                                                    'info'=>$info,
+                                                    'show_menu'=>$show_menu,
+                                                    'menu_items'=>$menu_items,
                                                     ]);
     }
 
