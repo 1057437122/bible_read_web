@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Redirect;
 
 class FrontController extends BaseController
 {
@@ -12,8 +13,12 @@ class FrontController extends BaseController
     	parent::__construct();
     }
     public function index(){
-    	echo 'this is Front index';
-    	mylog('come to front page');
+
+    	$permanent = 1;
+
+    	header('Location: ' . URL('/'.$this->front.'/volume'), true, $permanent ? 301 : 302);
+
+    	exit();
     	
     }
 }

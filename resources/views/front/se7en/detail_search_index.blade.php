@@ -14,16 +14,9 @@
     	<tbody>
     	
 	      	@foreach($details as $detail)
-          <tr >
-            @if($colspan != 1)
-            <td>{{ $detail->version }}</td>
-            <td>{{ $detail->chapter_num }}章</td>
-            <td>{{ $detail->section_num }}节</td>
-            
-            <td><a id="detail_{{ $detail->id }}">{{ $detail->content }}</a></td>
-            @else
-            <td>{!! htmlspecialchars_decode($detail->content) !!}</td>
-            @endif
+          <tr>
+            <td>{{ $detail->name }}</td>
+            <td><a href="{{ URL('/'.$front.'/detail?chapter_id='.$detail->chapter_id) }}#detail_{{$detail->id}}">...{{ $detail->content }}...</a></td>
           </tr>
           
           @endforeach
@@ -54,7 +47,7 @@ $('#dynamic_pager_demo1').bootpag({
     page: {{ $start_page }},
     maxVisible: 10
 }).on("page", function(event, num){
-    window.location.href = "{{ URL('/'.$front.'/detail?chapter_id='.$chapter_id )}}&page="+num;
+    window.location.href = "{{ URL('/'.$front.'/detail/search?search_item='.$search_item )}}&page="+num;
 });
 
 </script>
