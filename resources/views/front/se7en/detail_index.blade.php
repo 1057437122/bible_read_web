@@ -8,7 +8,7 @@
 <div class="widget-container fluid-height clearfix">
 
 <div class="heading">
-  <i class="icon-table"></i>{{ $info->vname.'>'.$info->lname.'>'.$info->cname }}    
+  <i class="icon-table"></i><a href="{{ URL('/'.$front.'/volume?category_id='.$info->cat_id) }}">{{ $info->vname }}</a> > <a href="{{ URL('/'.$front.'/chapter?volume_id='.$info->vid) }}" >{{ $info->lname }}</a> > {{ $info->cname }}    
 </div>
   <div class="widget-content padded clearfix">
     <table class="table table-striped">

@@ -28,7 +28,8 @@ class DetailController extends BaseController
         $info = DB::table('chapter')
                 ->leftJoin('list','list.id','=','chapter.list_id')
                 ->leftJoin('volume','volume.id','=','chapter.volume_id')
-                ->select('volume.name as vname','list.name as lname','chapter.name as cname')
+                ->leftJoin('category','category.id','=','volume.category_id')
+                ->select('volume.name as vname','list.name as lname','chapter.name as cname','volume.id as vid','category.id as cat_id')
                 ->where('chapter.id',$id)
                 ->first();
 
