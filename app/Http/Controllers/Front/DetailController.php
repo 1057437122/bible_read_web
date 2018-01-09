@@ -36,18 +36,49 @@ class DetailController extends BaseController
         $details = DB::table('detail')->where('chapter_id',$id)->paginate($this->detail_page);
 
         $menu_items = [];
+        #we need to judge whether the chapter belong to bible translation  which section_num is not null ,previous chapter_id is less than current id  -- 
+        $cur_section = $details[0]->section_num;
+        $prev_chapter = DB::table('chapter')->select('id','name')->where('id','<=',function($query) use ($id,$cur_section){
+                                                                        $query
+                                                                        ->select('chapter_id')
+                                                                        ->from('detail');
+                                                                        if($cur_section)
+                                                                            $query->whereNotNull('section_num');
+                                                                        else
+                                                                            $query->whereNull('section_num');
 
-        $prev_chapter_id = $id - 1;
-        $prev_chapter = DB::table('chapter')->select('id','name')->where('id',$prev_chapter_id)->first();
+                                                                        $query
+                                                                        ->where('chapter_id','<',$id)
+                                                                        ->orderBy('id','desc')
+                                                                        ->first();
+                                                                    })
+                                                                    ->orderBy('id','desc')
+                                                                    ->first();
+
+        // $prev_chapter_id = $id - 1;
+        // $prev_chapter = DB::table('chapter')->select('id','name')->where('id',$prev_chapter_id)->first();
         if($prev_chapter){
-            $prev_arr = ['url'=>URL('/'.$this->front.'/detail?chapter_id='.$prev_chapter_id),'name'=>'上一章','info'=>$prev_chapter->name];
+            $prev_arr = ['url'=>URL('/'.$this->front.'/detail?chapter_id='.$prev_chapter->id),'name'=>'上一章','info'=>$prev_chapter->name];
             array_push($menu_items, $prev_arr);
         }
         
-        $next_chapter_id = $id + 1;
-        $next_chapter = DB::table('chapter')->select('id','name')->where('id',$next_chapter_id)->first();
+        $next_chapter = DB::table('chapter')->select('id','name')->where('id','>=',function($query) use ($id,$cur_section){
+                                                                        $query
+                                                                        ->select('chapter_id')
+                                                                        ->from('detail');
+                                                                        if($cur_section)
+                                                                            $query->whereNotNull('section_num');
+                                                                        else
+                                                                            $query->whereNull('section_num');
+                                                                        $query
+                                                                        ->where('chapter_id','>',$id)
+                                                                        ->orderBy('id','asc')
+                                                                        ->first();
+                                                                    })
+                                                                    ->orderBy('id','asc')
+                                                                    ->first();
         if($next_chapter){
-            $next_arr = ['url'=>URL('/'.$this->front.'/detail?chapter_id='.$next_chapter_id),'name'=>'下一章','info'=>$next_chapter->name];
+            $next_arr = ['url'=>URL('/'.$this->front.'/detail?chapter_id='.$next_chapter->id),'name'=>'下一章','info'=>$next_chapter->name];
             array_push($menu_items, $next_arr);
         }
         if($menu_items)
